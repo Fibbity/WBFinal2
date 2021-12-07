@@ -6,11 +6,12 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     [Header("Components")]
+    [Header("Top Bar")]
     [SerializeField] private TextMeshProUGUI CurrentLocationText;
-
     [SerializeField] private TextMeshProUGUI MovesText;
     [SerializeField] private TextMeshProUGUI ScoreText;
 
+    [Header("Services")]
     [SerializeField] private UnityInputService InputService;
     [SerializeField] private UnityOutputService OutputService;
 
@@ -30,8 +31,11 @@ public class GameManager : MonoBehaviour
 
         _game.previousLocation = _game.Player.Location;
         _game.Output.WriteLine(_game.WelcomeMessage);
+        _game.Output.WriteLine(_game.Player.Location);
 
         Game.Look(_game);
+
+        _game.Output.WriteLine(" ");
 
         InputService.InputField.Select();
         InputService.InputField.ActivateInputField();

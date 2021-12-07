@@ -19,9 +19,13 @@ namespace Zork
 
         public Room previousLocation { get; set; }
 
+
         public string WelcomeMessage { get; set; }
 
         public string ExitMessage { get; set; }
+
+        [JsonIgnore]
+        public string commandSubject { get; set; }
 
         [JsonIgnore]
         public Player Player { get; private set; }
@@ -46,6 +50,9 @@ namespace Zork
 
             Commands = new Dictionary<string, Command>()
             {
+                { "DROP", new Command("DROP", new string[] { "DROP", "D" }, game => Drop(game, commandSubject)) },
+                { "INVENTORY", new Command("INVENTORY", new string[] { "INVENTORY", "I"}, ShowInventory) },
+                { "GET", new Command("GET", new string[] { "GET", "G" }, game => Get(game, commandSubject)) },
                 { "QUIT", new Command("QUIT", new string[] { "QUIT", "Q", "BYE" }, Quit) },
                 { "LOOK", new Command("LOOK", new string[] { "LOOK", "L" }, Look) },
                 { "NORTH", new Command("NORTH", new string[] { "NORTH", "N" }, game => Move(game, Directions.NORTH)) },
@@ -84,27 +91,51 @@ namespace Zork
         {
 
             Command foundCommand = null;
+
+            string[] sortedString = commandString.Split(' ');
+
             foreach (Command command in Commands.Values)
             {
-                if (command.Verbs.Contains(commandString))
+                if (command.Verbs.Contains("GET"))
                 {
-                    foundCommand = command;
-                    break;
+                    if (sortedString.Length > 1)
+                    {
+                        commandSubject = sortedString[1];
+                    }
+                    else
+                    {
+                        Output.WriteLine("Take What?");
+                        Output.Write(" ");
+                        return;
+                    }
                 }
+                else if (command.Verbs.Contains("DROP"))
+                {
+                    if (sortedString.Length > 1)
+                    {
+                        commandSubject = sortedString[1];
+                    }
+                    else
+                    {
+                        Output.WriteLine("Drop What?");
+                        Output.Write(" ");
+                        return;
+                    }
+                }
+
+                foundCommand = command;
+                break;
             }
 
             if (foundCommand != null)
             {
                 foundCommand.Action(this);
                 Player.Moves++;
-
-                
             }
             else
             {
                 Output.WriteLine("Unknown command.");
             }
-
         }//END InputRecievedHandler
 
         //---------------------//
@@ -117,7 +148,7 @@ namespace Zork
             }
             else
             {
-                game.Output.WriteLine($"You moved {direction}");
+                game.Output.WriteLine(game.Player.Location);
             }
 
             if (game.previousLocation != game.Player.Location)
@@ -126,17 +157,95 @@ namespace Zork
                 Look(game);
             }
             string value = " ";
-            game.Output.WriteLine(value);
+
+            game.Output.Write(value);
 
         }//END Move
 
         //---------------------//
-        public static void Look(Game game) => game.Output.WriteLine(game.Player.Location.Description);
+        public static void Look(Game game)
         //---------------------//
+        {
+            game.Output.WriteLine(game.Player.Location.Description);
+
+            if (game.Player.Location.Items != null)
+            {
+                foreach (Item item in game.Player.Location.Items)
+                {
+                    game.Output.WriteLine(item.Description);
+
+                }
+            }
+        }
 
         //---------------------//
         private static void Quit(Game game) => game.IsRunning = false;
         //---------------------//
+
+        //---------------------//
+        private static void Get(Game game, string subject)
+        //---------------------//
+        {
+            foreach (Item item in game.Player.Location.Items)
+            {
+                if (item.Name == subject)
+                {
+                    game.Player.Inventory.Add(item);
+                    game.Player.Location.Items.Remove(item);
+
+                    game.Output.WriteLine($"{subject} Taken");
+                    game.Output.Write(" ");
+                    return;
+                }
+            }
+            game.Output.WriteLine($"That's not here.");
+            game.Output.Write(" ");
+
+        }//END Get
+
+        //---------------------//
+        private static void Drop(Game game, string subject)
+        //---------------------//
+        {
+            foreach (Item item in game.Player.Inventory)
+            {
+                if (item.Name == subject)
+                {
+                    game.Player.Location.Items.Add(item);
+                    game.Player.Inventory.Remove(item);
+
+                    game.Output.WriteLine($"Dropped {subject}");
+                    game.Output.Write(" ");
+                    return;
+                }
+            }
+            game.Output.WriteLine($"That isn't in your inventory.");
+            game.Output.Write(" ");
+
+        }//End Drop
+
+
+        //---------------------//
+        private static void ShowInventory(Game game)
+        //---------------------//
+        {
+            if (game.Player.Inventory != null)
+            {
+                game.Output.WriteLine("Inventory:");
+
+                foreach (Item item in game.Player.Inventory)
+                {
+                    game.Output.WriteLine(item.Name);
+                }
+                game.Output.Write(" ");
+            }
+            else
+            {
+                game.Output.WriteLine("You are not carrying anything.");
+                game.Output.Write(" ");
+            }
+
+        }//END ShowInventory
 
         //---------------------//
         private static void Reward(Game game) => game.Player.Score += 1;
