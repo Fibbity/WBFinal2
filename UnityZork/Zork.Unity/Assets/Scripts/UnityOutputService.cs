@@ -8,17 +8,13 @@ using System;
 
 public class UnityOutputService : MonoBehaviour, IOutputService
 {
-    [SerializeField]
-    private int MaxEntries = 60;
+    [SerializeField] private int MaxEntries = 60;
 
-    [SerializeField]
-    private Transform OutputTextContainer;
+    [SerializeField] private Transform OutputTextContainer;
 
-    [SerializeField]
-    private TextMeshProUGUI TextLinePrefab;
+    [SerializeField] private TextMeshProUGUI TextLinePrefab;
 
-    [SerializeField]
-    private Image NewLinePrefab;
+    [SerializeField] private Image NewLinePrefab;
 
     private readonly List<GameObject> mEntries;
 

@@ -341,6 +341,9 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>Library\PackageCache\com.unity.nuget.newtonsoft-json@2.0.0\Runtime\AOT\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Zork.Common">
+      <HintPath>Assets\netstandard2.0\Zork.Common.dll</HintPath>
+    </Reference>
     <Reference Include="netstandard">
       <HintPath>C:\Users\beatt\Desktop\Unity\2020.3.16f1\Editor\Data\NetStandard\ref\2.0.0\netstandard.dll</HintPath>
     </Reference>
