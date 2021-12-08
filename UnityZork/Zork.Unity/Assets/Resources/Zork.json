@@ -8,7 +8,13 @@
           "North": "North of House",
           "South": "South of House",
           "West": "Forest 1"
-        }
+        },
+        "Items": [
+          {
+            "Name": "STICK",
+            "Description": "There's a stick here'."
+          }
+        ]
       },
       {
         "Name": "North of House",
@@ -17,7 +23,13 @@
           "North": "Forest 2",
           "East": "Behind House",
           "West": "West of House"
-        }
+        },
+        "Items": [
+          {
+            "Name": "ROCK",
+            "Description": "A small rock is here."
+          }
+        ]
       },
       {
         "Name": "South of House",
@@ -25,7 +37,13 @@
         "Neighbors": {
           "East": "Behind House",
           "West": "West of House"
-        }
+        },
+        "Items": [
+          {
+            "Name": "BAR",
+            "Description": "A bar from a window is here."
+          }
+        ]
       },
       {
         "Name": "Behind House",
@@ -34,7 +52,13 @@
           "North": "North of House",
           "East": "Clearing",
           "South": "South of House"
-        }
+        },
+        "Items": [
+          {
+            "Name": "PIE",
+            "Description": "A fresh baked cherry pie sits here."
+          }
+        ]
       },
       {
         "Name": "Forest 1",
@@ -42,7 +66,13 @@
         "Neighbors": {
           "South": "Forest 3",
           "East": "West of House"
-        }
+        },
+        "Items": [
+          {
+            "Name": "MAP",
+            "Description": "A map with a scribble on it lays on the ground, it says head East."
+          }
+        ]
       },
       {
         "Name": "Forest 2",
@@ -50,7 +80,13 @@
         "Neighbors": {
           "South": "Clearing",
           "East": "Clearing"
-        }
+        },
+        "Items": [
+          {
+            "Name": "FISH",
+            "Description": "A dead fish is dried up here, been sitting out a while, smells awful."
+          }
+        ]
       },
       {
         "Name": "Forest 3",
@@ -58,7 +94,13 @@
         "Neighbors": {
           "North": "South of House",
           "East": "Clearing"
-        }
+        },
+        "Items": [
+          {
+            "Name": "POTATO",
+            "Description": "A raw potato grows out of the ground."
+          }
+        ]
       },
       {
         "Name": "Clearing",
@@ -66,7 +108,13 @@
         "Neighbors": {
           "West": "Forest 2",
           "South": "Forest 3"
-        }
+        },
+        "Items": [
+          {
+            "Name": "MANTIS",
+            "Description": "A praying mantis crawls around here."
+          }
+        ]
       }
     ]
   },
