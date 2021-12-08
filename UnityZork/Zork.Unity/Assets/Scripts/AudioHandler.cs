@@ -1,18 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioHandler : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private AudioSource sfxSource;
+    [SerializeField] private AudioClip inputClip;
 
-    // Update is called once per frame
-    void Update()
+    //---------------------//
+    public void PlayInput()
+    //---------------------//
     {
-        
-    }
-}
+        sfxSource.PlayOneShot(inputClip);
+
+    }//END PlayInput
+
+
+}//END AudioHandler
