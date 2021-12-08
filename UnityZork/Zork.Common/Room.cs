@@ -18,6 +18,9 @@ namespace Zork
         [JsonProperty(PropertyName = "Neighbors", Order = 3)]
         private Dictionary<Directions, string> NeighborNames { get; set; } = new Dictionary<Directions, string>();
 
+        [JsonProperty(PropertyName = "Items", Order = 4)]
+        public List<Item> Items { get; set; }
+
         [JsonIgnore]
         public IReadOnlyDictionary<Directions, Room> Neighbors => _neighbors;
 
@@ -60,6 +63,7 @@ namespace Zork
             {
                 _neighbors.Add(entry.Key, world.RoomsByName[entry.Value]);
             }
+
         }//END UpdateNeighbors
 
         //---------------------//
@@ -83,4 +87,5 @@ namespace Zork
         private Dictionary<Directions, Room> _neighbors = new Dictionary<Directions, Room>();
 
     }//END Room
-}
+
+}//END Zork

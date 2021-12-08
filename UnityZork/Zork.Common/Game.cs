@@ -29,6 +29,7 @@ namespace Zork
 
         [JsonIgnore]
         public Player Player { get; private set; }
+
         [JsonIgnore]
         public bool IsRunning { get; set; }
 
@@ -50,10 +51,7 @@ namespace Zork
 
             Commands = new Dictionary<string, Command>()
             {
-                { "DROP", new Command("DROP", new string[] { "DROP", "D" }, game => Drop(game, commandSubject)) },
-                { "INVENTORY", new Command("INVENTORY", new string[] { "INVENTORY", "I"}, ShowInventory) },
-                { "GET", new Command("GET", new string[] { "GET", "G" }, game => Get(game, commandSubject)) },
-                { "QUIT", new Command("QUIT", new string[] { "QUIT", "Q", "BYE" }, Quit) },
+                { "QUIT", new Command("QUIT", new string[] { "QUIT", "Q" }, Quit) },
                 { "LOOK", new Command("LOOK", new string[] { "LOOK", "L" }, Look) },
                 { "NORTH", new Command("NORTH", new string[] { "NORTH", "N" }, game => Move(game, Directions.NORTH)) },
                 { "SOUTH", new Command("SOUTH", new string[] { "SOUTH", "S" }, game => Move(game, Directions.SOUTH)) },
@@ -61,6 +59,9 @@ namespace Zork
                 { "WEST", new Command("WEST", new string[] { "WEST", "W" }, game => Move(game, Directions.WEST)) },
                 { "REWARD", new Command("REWARD", new string[] { "REWARD", "R"}, Reward) },
                 { "SCORE", new Command("SCORE", new string[] { "SCORE"}, ScoreCheck) },
+                { "INVENTORY", new Command("INVENTORY", new string[] { "INVENTORY", "I"}, ShowInventory) },
+                { "GET", new Command("GET", new string[] { "GET", "G", "GRAB", "TAKE"}, game => Get(game, commandSubject)) },
+                { "DROP", new Command("DROP", new string[] { "DROP", "D" }, game => Drop(game, commandSubject)) },
 
             };
 
@@ -91,40 +92,43 @@ namespace Zork
         {
 
             Command foundCommand = null;
-
             string[] sortedString = commandString.Split(' ');
 
             foreach (Command command in Commands.Values)
             {
-                if (command.Verbs.Contains("GET"))
-                {
-                    if (sortedString.Length > 1)
-                    {
-                        commandSubject = sortedString[1];
-                    }
-                    else
-                    {
-                        Output.WriteLine("Take What?");
-                        Output.Write(" ");
-                        return;
-                    }
-                }
-                else if (command.Verbs.Contains("DROP"))
-                {
-                    if (sortedString.Length > 1)
-                    {
-                        commandSubject = sortedString[1];
-                    }
-                    else
-                    {
-                        Output.WriteLine("Drop What?");
-                        Output.Write(" ");
-                        return;
-                    }
-                }
 
-                foundCommand = command;
-                break;
+                if (command.Verbs.Contains(sortedString[0]))
+                {
+                    if (command.Verbs.Contains("GET"))
+                    {
+                        if (sortedString.Length > 1)
+                        {
+                            commandSubject = sortedString[1];
+                        }
+                        else
+                        {
+                            Output.WriteLine("What are you taking?");
+                            Output.Write(" ");
+                            return;
+                        }
+                    }
+                    else if (command.Verbs.Contains("DROP"))
+                    {
+                        if (sortedString.Length > 1)
+                        {
+                            commandSubject = sortedString[1];
+                        }
+                        else
+                        {
+                            Output.WriteLine("What are you dropping?");
+                            Output.Write(" ");
+                            return;
+                        }
+                    }
+
+                    foundCommand = command;
+                    break;
+                }
             }
 
             if (foundCommand != null)
@@ -135,7 +139,9 @@ namespace Zork
             else
             {
                 Output.WriteLine("Unknown command.");
+                Output.Write(" ");
             }
+
         }//END InputRecievedHandler
 
         //---------------------//

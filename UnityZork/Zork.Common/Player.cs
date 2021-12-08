@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
 namespace Zork.Common
 
@@ -8,15 +9,19 @@ namespace Zork.Common
     {
         
         private Room _location;
+
         private int _score;
         private int _moves;
+        public List<Item> Inventory { get; set; } = new List<Item>();
 
         public event EventHandler<Room> LocationChanged;
 
         public event EventHandler<int> ScoreChanged;
 
         public event EventHandler<int> MovesChanged;
+
         public World World { get; }
+
 
         [JsonIgnore]
         public Room Location
